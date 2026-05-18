@@ -115,3 +115,84 @@ export interface DashboardStats {
   sessionsThisWeek: number;
   pendingInvoices: number;
 }
+
+// ─── Boutique ───────────────────────────────────────────────────────────────
+
+export type ProductCategory =
+  | 'ensemble'
+  | 'haut'
+  | 'bas'
+  | 'accessoire'
+  | 'pack_coaching'
+  | 'seance';
+
+export type ProductSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
+
+export interface ProductVariant {
+  color: string;
+  colorHex: string;
+  stock: Record<ProductSize, number>;
+}
+
+export interface ShopProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice?: number;
+  category: ProductCategory;
+  imageColor: string; // gradient CSS for placeholder
+  variants?: ProductVariant[];
+  badge?: string; // "Nouveau", "Promo", etc.
+  brand?: 'ariesfitwear' | 'coachpro';
+  externalUrl?: string;
+}
+
+export interface CoachingPack {
+  id: string;
+  name: string;
+  description: string;
+  sessions: number;
+  sessionType: 'présentiel' | 'en ligne' | 'mixte';
+  includesDiet: boolean;
+  dietDetails?: string;
+  price: number;
+  originalPrice?: number;
+  priceWithDiet?: number;
+  durationWeeks: number;
+  features: string[];
+  badge?: string;
+  popular?: boolean;
+}
+
+export interface CartItem {
+  id: string;
+  productId: string;
+  type: 'clothing' | 'coaching_pack' | 'session';
+  name: string;
+  price: number;
+  quantity: number;
+  size?: ProductSize;
+  color?: string;
+  withDiet?: boolean;
+  imageColor: string;
+}
+
+export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+export type PaymentMethod2 = 'card' | 'bank_transfer' | 'paypal';
+
+export interface Order {
+  id: string;
+  userId?: string;
+  customerName: string;
+  customerEmail: string;
+  items: CartItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  status: OrderStatus;
+  paymentMethod: PaymentMethod2;
+  createdAt: string;
+  shippingAddress?: string;
+  notes?: string;
+}

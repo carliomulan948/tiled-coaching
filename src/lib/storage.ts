@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState } from './types';
+import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState, CartItem, Order } from './types';
 import { mockCoaches, mockClients, mockSessions, mockInvoices, mockPayments, mockProgressData } from './mockData';
 
 const STORAGE_KEYS = {
@@ -11,6 +11,8 @@ const STORAGE_KEYS = {
   INVOICES: 'coachpro_invoices',
   PAYMENTS: 'coachpro_payments',
   PROGRESS: 'coachpro_progress',
+  CART: 'coachpro_cart',
+  ORDERS: 'coachpro_orders',
 };
 
 function getItem<T>(key: string, defaultValue: T): T {
@@ -201,4 +203,51 @@ export function getClientProgress(clientId: string): ProgressMeasurement[] {
 export function updateCoachIban(coachId: string, iban: string): void {
   const coaches = getCoaches().map(c => c.id === coachId ? { ...c, iban } : c);
   saveCoaches(coaches);
+}
+
+// Cart
+export function getCart(): CartItem[] {
+  return getItem<CartItem[]>(STORAGE_KEYS.CART, []);
+}
+
+export function saveCart(cart: CartItem[]): void {
+  setItem(STORAGE_KEYS.CART, cart);
+}
+
+export function addToCart(item: CartItem): void {
+  const cart = getCart();
+  const existing = cart.find(
+    c => c.productId === item.productId && c.size === item.size && c.color === item.color && c.withDiet === item.withDiet
+  );
+  if (existing) {
+    existing.quantity += item.quantity;
+    saveCart(cart);
+  } else {
+    cart.push(item);
+    saveCart(cart);
+  }
+}
+
+export function removeFromCart(id: string): void {
+  saveCart(getCart().filter(c => c.id !== id));
+}
+
+export function updateCartQuantity(id: string, quantity: number): void {
+  if (quantity <= 0) { removeFromCart(id); return; }
+  saveCart(getCart().map(c => c.id === id ? { ...c, quantity } : c));
+}
+
+export function clearCart(): void {
+  setItem(STORAGE_KEYS.CART, []);
+}
+
+// Orders
+export function getOrders(): Order[] {
+  return getItem<Order[]>(STORAGE_KEYS.ORDERS, []);
+}
+
+export function addOrder(order: Order): void {
+  const orders = getOrders();
+  orders.unshift(order);
+  setItem(STORAGE_KEYS.ORDERS, orders);
 }

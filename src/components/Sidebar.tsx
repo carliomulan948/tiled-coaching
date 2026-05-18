@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Dumbbell, LayoutDashboard, Users, FileText, Calendar,
-  CreditCard, TrendingUp, Settings, LogOut, ChevronRight, Shield
+  CreditCard, TrendingUp, Settings, LogOut, ChevronRight, Shield, ShoppingBag
 } from 'lucide-react';
 import { getAuth, clearAuth } from '@/lib/storage';
 import { useEffect, useState } from 'react';
@@ -17,6 +17,7 @@ const navItems = [
   { href: '/schedule', icon: Calendar, label: 'Planning' },
   { href: '/payments', icon: CreditCard, label: 'Paiements' },
   { href: '/progress', icon: TrendingUp, label: 'Progression' },
+  { href: '/boutique', icon: ShoppingBag, label: 'Boutique' },
   { href: '/admin', icon: Shield, label: 'Administration', adminOnly: true },
 ];
 
