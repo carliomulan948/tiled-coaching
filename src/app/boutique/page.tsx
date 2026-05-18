@@ -637,10 +637,11 @@ export default function BoutiquePage() {
 
   const CATEGORIES = [
     { key: 'all', label: 'Tout' },
-    { key: 'ensemble', label: 'Ensembles' },
-    { key: 'haut', label: 'Hauts' },
-    { key: 'bas', label: 'Bas' },
-    { key: 'accessoire', label: 'Accessoires' },
+    { key: 'ensemble', label: 'Sets & Ensembles' },
+    { key: 'haut_femme', label: 'Hauts Femme' },
+    { key: 'bas_femme', label: 'Bas Femme' },
+    { key: 'haut_homme', label: 'Hauts Homme' },
+    { key: 'bas_homme', label: 'Bas Homme' },
   ];
 
   const filteredProducts = categoryFilter === 'all'
@@ -740,6 +741,7 @@ export default function BoutiquePage() {
             ))}
           </div>
 
+          <p className="text-xs text-slate-500 mb-4">{filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredProducts.map(p => <ClothingCard key={p.id} product={p} />)}
           </div>

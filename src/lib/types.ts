@@ -120,9 +120,10 @@ export interface DashboardStats {
 
 export type ProductCategory =
   | 'ensemble'
-  | 'haut'
-  | 'bas'
-  | 'accessoire'
+  | 'haut_femme'
+  | 'bas_femme'
+  | 'haut_homme'
+  | 'bas_homme'
   | 'pack_coaching'
   | 'seance';
 
