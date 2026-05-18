@@ -1249,11 +1249,11 @@ export const mockShopProducts: ShopProduct[] = [
     description: 'T-shirt oversize 300g Dark Line "Fallen". Tissu épais premium, sérigraphie exclusive, style dark streetwear.',
     price: 31.90,
     category: 'haut_homme',
-    imageColor: 'from-zinc-900 to-neutral-700',
+    imageColor: 'from-violet-900 to-purple-700',
     brand: 'ariesfitwear',
     externalUrl: 'https://ariesfitwear.com',
     variants: [
-      { color: 'Noir', colorHex: '#0f0f0f', stock: { XS: 0, S: 5, M: 6, L: 4, XL: 2, XXL: 0 } },
+      { color: 'Violet', colorHex: '#4c1d95', stock: { XS: 0, S: 5, M: 6, L: 4, XL: 2, XXL: 0 } },
     ],
   },
 
