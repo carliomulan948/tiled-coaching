@@ -179,6 +179,33 @@ export interface CartItem {
   imageColor: string;
 }
 
+// ─── Messagerie ──────────────────────────────────────────────────────────────
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  senderName: string;
+  senderRole: UserRole;
+  content: string;
+  createdAt: string;
+  readBy: string[];
+  attachmentName?: string;
+}
+
+export interface Conversation {
+  id: string;
+  participantIds: string[];
+  participantNames: Record<string, string>;
+  participantRoles: Record<string, UserRole>;
+  lastMessage?: string;
+  lastMessageAt?: string;
+  lastSenderId?: string;
+  createdAt: string;
+}
+
+// ─── Boutique ────────────────────────────────────────────────────────────────
+
 export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
 export type PaymentMethod2 = 'card' | 'bank_transfer' | 'paypal';
 

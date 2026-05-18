@@ -1,7 +1,7 @@
 'use client';
 
-import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState, CartItem, Order } from './types';
-import { mockCoaches, mockClients, mockSessions, mockInvoices, mockPayments, mockProgressData } from './mockData';
+import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState, CartItem, Order, Conversation, Message } from './types';
+import { mockCoaches, mockClients, mockSessions, mockInvoices, mockPayments, mockProgressData, mockConversations, mockMessages } from './mockData';
 
 const STORAGE_KEYS = {
   AUTH: 'coachpro_auth',
@@ -13,6 +13,8 @@ const STORAGE_KEYS = {
   PROGRESS: 'coachpro_progress',
   CART: 'coachpro_cart',
   ORDERS: 'coachpro_orders',
+  CONVERSATIONS: 'coachpro_conversations',
+  MESSAGES: 'coachpro_messages',
 };
 
 function getItem<T>(key: string, defaultValue: T): T {
@@ -36,24 +38,14 @@ function setItem<T>(key: string, value: T): void {
 
 export function initializeStorage(): void {
   if (typeof window === 'undefined') return;
-  if (!localStorage.getItem(STORAGE_KEYS.COACHES)) {
-    setItem(STORAGE_KEYS.COACHES, mockCoaches);
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.CLIENTS)) {
-    setItem(STORAGE_KEYS.CLIENTS, mockClients);
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.SESSIONS)) {
-    setItem(STORAGE_KEYS.SESSIONS, mockSessions);
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.INVOICES)) {
-    setItem(STORAGE_KEYS.INVOICES, mockInvoices);
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.PAYMENTS)) {
-    setItem(STORAGE_KEYS.PAYMENTS, mockPayments);
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.PROGRESS)) {
-    setItem(STORAGE_KEYS.PROGRESS, mockProgressData);
-  }
+  if (!localStorage.getItem(STORAGE_KEYS.COACHES)) setItem(STORAGE_KEYS.COACHES, mockCoaches);
+  if (!localStorage.getItem(STORAGE_KEYS.CLIENTS)) setItem(STORAGE_KEYS.CLIENTS, mockClients);
+  if (!localStorage.getItem(STORAGE_KEYS.SESSIONS)) setItem(STORAGE_KEYS.SESSIONS, mockSessions);
+  if (!localStorage.getItem(STORAGE_KEYS.INVOICES)) setItem(STORAGE_KEYS.INVOICES, mockInvoices);
+  if (!localStorage.getItem(STORAGE_KEYS.PAYMENTS)) setItem(STORAGE_KEYS.PAYMENTS, mockPayments);
+  if (!localStorage.getItem(STORAGE_KEYS.PROGRESS)) setItem(STORAGE_KEYS.PROGRESS, mockProgressData);
+  if (!localStorage.getItem(STORAGE_KEYS.CONVERSATIONS)) setItem(STORAGE_KEYS.CONVERSATIONS, mockConversations);
+  if (!localStorage.getItem(STORAGE_KEYS.MESSAGES)) setItem(STORAGE_KEYS.MESSAGES, mockMessages);
 }
 
 // Auth
@@ -203,6 +195,77 @@ export function getClientProgress(clientId: string): ProgressMeasurement[] {
 export function updateCoachIban(coachId: string, iban: string): void {
   const coaches = getCoaches().map(c => c.id === coachId ? { ...c, iban } : c);
   saveCoaches(coaches);
+}
+
+// Conversations
+export function getConversations(): Conversation[] {
+  return getItem<Conversation[]>(STORAGE_KEYS.CONVERSATIONS, mockConversations);
+}
+
+export function saveConversations(convs: Conversation[]): void {
+  setItem(STORAGE_KEYS.CONVERSATIONS, convs);
+}
+
+export function getConversationsForUser(userId: string): Conversation[] {
+  return getConversations().filter(c => c.participantIds.includes(userId));
+}
+
+export function getOrCreateConversation(userA: string, nameA: string, roleA: string, userB: string, nameB: string, roleB: string): Conversation {
+  const existing = getConversations().find(
+    c => c.participantIds.includes(userA) && c.participantIds.includes(userB)
+  );
+  if (existing) return existing;
+  const conv: Conversation = {
+    id: `conv-${Date.now()}`,
+    participantIds: [userA, userB],
+    participantNames: { [userA]: nameA, [userB]: nameB },
+    participantRoles: { [userA]: roleA as any, [userB]: roleB as any },
+    createdAt: new Date().toISOString(),
+  };
+  const convs = getConversations();
+  convs.unshift(conv);
+  saveConversations(convs);
+  return conv;
+}
+
+// Messages
+export function getMessages(): Message[] {
+  return getItem<Message[]>(STORAGE_KEYS.MESSAGES, mockMessages);
+}
+
+export function getMessagesForConversation(convId: string): Message[] {
+  return getMessages()
+    .filter(m => m.conversationId === convId)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export function sendMessage(msg: Message): void {
+  const messages = getMessages();
+  messages.push(msg);
+  setItem(STORAGE_KEYS.MESSAGES, messages);
+  // update conversation lastMessage
+  const convs = getConversations().map(c =>
+    c.id === msg.conversationId
+      ? { ...c, lastMessage: msg.content, lastMessageAt: msg.createdAt, lastSenderId: msg.senderId }
+      : c
+  );
+  saveConversations(convs);
+}
+
+export function markMessagesRead(convId: string, userId: string): void {
+  const messages = getMessages().map(m =>
+    m.conversationId === convId && !m.readBy.includes(userId)
+      ? { ...m, readBy: [...m.readBy, userId] }
+      : m
+  );
+  setItem(STORAGE_KEYS.MESSAGES, messages);
+}
+
+export function getUnreadCount(userId: string): number {
+  const convIds = getConversationsForUser(userId).map(c => c.id);
+  return getMessages().filter(
+    m => convIds.includes(m.conversationId) && m.senderId !== userId && !m.readBy.includes(userId)
+  ).length;
 }
 
 // Cart

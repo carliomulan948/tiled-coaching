@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Dumbbell, LayoutDashboard, Users, FileText, Calendar,
-  CreditCard, TrendingUp, Settings, LogOut, ChevronRight, Shield, ShoppingBag
+  CreditCard, TrendingUp, Settings, LogOut, ChevronRight, Shield, ShoppingBag, MessageSquare
 } from 'lucide-react';
+import { getUnreadCount } from '@/lib/storage';
 import { getAuth, clearAuth } from '@/lib/storage';
 import { useEffect, useState } from 'react';
 import { AuthState } from '@/lib/types';
@@ -17,6 +18,7 @@ const navItems = [
   { href: '/schedule', icon: Calendar, label: 'Planning' },
   { href: '/payments', icon: CreditCard, label: 'Paiements' },
   { href: '/progress', icon: TrendingUp, label: 'Progression' },
+  { href: '/messages', icon: MessageSquare, label: 'Messages', badge: true },
   { href: '/boutique', icon: ShoppingBag, label: 'Boutique' },
   { href: '/admin', icon: Shield, label: 'Administration', adminOnly: true },
 ];
@@ -30,9 +32,17 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [auth, setAuth] = useState<AuthState>({ user: null, role: null, isAuthenticated: false });
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
-    setAuth(getAuth());
+    const a = getAuth();
+    setAuth(a);
+    if (a.user) setUnread(getUnreadCount(a.user.id));
+    const interval = setInterval(() => {
+      const fresh = getAuth();
+      if (fresh.user) setUnread(getUnreadCount(fresh.user.id));
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -41,7 +51,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   };
 
   const visibleItems = navItems.filter(item => {
-    if (item.adminOnly && auth.role !== 'admin') return false;
+    if ((item as any).adminOnly && auth.role !== 'admin') return false;
     return true;
   });
 
@@ -121,7 +131,12 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                 >
                   <item.icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-500 group-hover:text-slate-300'}`} />
                   <span className="flex-1">{item.label}</span>
-                  {isActive && <ChevronRight className="w-3 h-3 text-blue-400" />}
+                  {(item as any).badge && unread > 0 && (
+                    <span className="w-5 h-5 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">
+                      {unread > 9 ? '9+' : unread}
+                    </span>
+                  )}
+                  {isActive && !((item as any).badge && unread > 0) && <ChevronRight className="w-3 h-3 text-blue-400" />}
                 </Link>
               );
             })}

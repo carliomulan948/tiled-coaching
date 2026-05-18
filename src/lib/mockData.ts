@@ -1,4 +1,4 @@
-import { Coach, Client, Session, Invoice, Payment, ProgressMeasurement, ShopProduct, CoachingPack } from './types';
+import { Coach, Client, Session, Invoice, Payment, ProgressMeasurement, ShopProduct, CoachingPack, Conversation, Message } from './types';
 
 export const mockCoaches: Coach[] = [
   {
@@ -924,6 +924,101 @@ export const mockProgressData: ProgressMeasurement[] = [
     biceps: 34,
     thighs: 53.5,
   },
+];
+
+// ─── Messagerie ──────────────────────────────────────────────────────────────
+
+export const mockConversations: Conversation[] = [
+  {
+    id: 'conv-1',
+    participantIds: ['coach-1', 'client-1'],
+    participantNames: { 'coach-1': 'Marie Dupont', 'client-1': 'Lucas Petit' },
+    participantRoles: { 'coach-1': 'coach', 'client-1': 'client' },
+    lastMessage: 'Super séance aujourd\'hui, continue comme ça ! 💪',
+    lastMessageAt: '2026-05-18T10:30:00Z',
+    lastSenderId: 'coach-1',
+    createdAt: '2026-01-10T09:00:00Z',
+  },
+  {
+    id: 'conv-2',
+    participantIds: ['coach-1', 'client-2'],
+    participantNames: { 'coach-1': 'Marie Dupont', 'client-2': 'Emma Rousseau' },
+    participantRoles: { 'coach-1': 'coach', 'client-2': 'client' },
+    lastMessage: 'Bonjour, est-ce que je peux décaler ma séance de mardi ?',
+    lastMessageAt: '2026-05-17T18:45:00Z',
+    lastSenderId: 'client-2',
+    createdAt: '2026-02-01T10:00:00Z',
+  },
+  {
+    id: 'conv-3',
+    participantIds: ['coach-1', 'client-3'],
+    participantNames: { 'coach-1': 'Marie Dupont', 'client-3': 'Pierre Moreau' },
+    participantRoles: { 'coach-1': 'coach', 'client-3': 'client' },
+    lastMessage: 'Ton programme de la semaine est prêt, vérifie l\'espace client.',
+    lastMessageAt: '2026-05-15T14:00:00Z',
+    lastSenderId: 'coach-1',
+    createdAt: '2023-11-15T08:00:00Z',
+  },
+  {
+    id: 'conv-4',
+    participantIds: ['coach-2', 'client-4'],
+    participantNames: { 'coach-2': 'Thomas Martin', 'client-4': 'Chloé Lefevre' },
+    participantRoles: { 'coach-2': 'coach', 'client-4': 'client' },
+    lastMessage: 'Rappelle-toi d\'augmenter les glucides la veille de ta sortie longue.',
+    lastMessageAt: '2026-05-18T08:10:00Z',
+    lastSenderId: 'coach-2',
+    createdAt: '2026-01-20T09:00:00Z',
+  },
+  {
+    id: 'conv-5',
+    participantIds: ['coach-2', 'client-5'],
+    participantNames: { 'coach-2': 'Thomas Martin', 'client-5': 'Antoine Dubois' },
+    participantRoles: { 'coach-2': 'coach', 'client-5': 'client' },
+    lastMessage: 'Mes résultats de bilan sanguin sont arrivés, je vous les envoie.',
+    lastMessageAt: '2026-05-16T11:20:00Z',
+    lastSenderId: 'client-5',
+    createdAt: '2026-03-01T10:00:00Z',
+  },
+  {
+    id: 'conv-6',
+    participantIds: ['coach-3', 'client-7'],
+    participantNames: { 'coach-3': 'Sophie Bernard', 'client-7': 'Hugo Garnier' },
+    participantRoles: { 'coach-3': 'coach', 'client-7': 'client' },
+    lastMessage: 'N\'oublie pas la méditation du matin, 10 min suffisent 🧘',
+    lastMessageAt: '2026-05-18T07:00:00Z',
+    lastSenderId: 'coach-3',
+    createdAt: '2026-02-10T09:00:00Z',
+  },
+];
+
+export const mockMessages: Message[] = [
+  // conv-1 : Marie ↔ Lucas
+  { id: 'msg-1-1', conversationId: 'conv-1', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'Bonjour Lucas ! Comment tu te sens après la séance d\'hier ?', createdAt: '2026-05-17T09:00:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-2', conversationId: 'conv-1', senderId: 'client-1', senderName: 'Lucas Petit', senderRole: 'client', content: 'Bonjour Marie ! Courbatures dans les jambes mais ça va, je suis motivé 💪', createdAt: '2026-05-17T09:15:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-3', conversationId: 'conv-1', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'C\'est normal, c\'est bon signe ! Pense à bien t\'hydrater et à prendre des protéines ce soir.', createdAt: '2026-05-17T09:20:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-4', conversationId: 'conv-1', senderId: 'client-1', senderName: 'Lucas Petit', senderRole: 'client', content: 'D\'accord ! On fait quoi demain comme exercices ?', createdAt: '2026-05-17T09:35:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-5', conversationId: 'conv-1', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'Demain on attaque le haut du corps : développé couché, rowing, élévations latérales. Je t\'envoie le programme ce soir.', createdAt: '2026-05-17T10:00:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-6', conversationId: 'conv-1', senderId: 'client-1', senderName: 'Lucas Petit', senderRole: 'client', content: 'Parfait merci ! À demain 👍', createdAt: '2026-05-17T10:05:00Z', readBy: ['coach-1', 'client-1'] },
+  { id: 'msg-1-7', conversationId: 'conv-1', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'Super séance aujourd\'hui, continue comme ça ! 💪', createdAt: '2026-05-18T10:30:00Z', readBy: ['coach-1', 'client-1'] },
+
+  // conv-2 : Marie ↔ Emma
+  { id: 'msg-2-1', conversationId: 'conv-2', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'Bonjour Emma, comment tu avances sur tes objectifs cette semaine ?', createdAt: '2026-05-15T08:00:00Z', readBy: ['coach-1', 'client-2'] },
+  { id: 'msg-2-2', conversationId: 'conv-2', senderId: 'client-2', senderName: 'Emma Rousseau', senderRole: 'client', content: 'Ça se passe bien ! J\'ai fait mes 3 séances cardio comme prévu. Par contre j\'ai du mal avec les squats lourds.', createdAt: '2026-05-15T08:30:00Z', readBy: ['coach-1', 'client-2'] },
+  { id: 'msg-2-3', conversationId: 'conv-2', senderId: 'coach-1', senderName: 'Marie Dupont', senderRole: 'coach', content: 'Très bien pour le cardio ! Pour les squats, on va retravailler la technique mardi, pas d\'inquiétude.', createdAt: '2026-05-15T09:00:00Z', readBy: ['coach-1', 'client-2'] },
+  { id: 'msg-2-4', conversationId: 'conv-2', senderId: 'client-2', senderName: 'Emma Rousseau', senderRole: 'client', content: 'Bonjour, est-ce que je peux décaler ma séance de mardi ?', createdAt: '2026-05-17T18:45:00Z', readBy: ['client-2'] },
+
+  // conv-4 : Thomas ↔ Chloé
+  { id: 'msg-4-1', conversationId: 'conv-4', senderId: 'coach-2', senderName: 'Thomas Martin', senderRole: 'coach', content: 'Bonjour Chloé ! J\'ai revu ton plan alimentaire pour la semaine avant ton marathon.', createdAt: '2026-05-17T07:30:00Z', readBy: ['coach-2', 'client-4'] },
+  { id: 'msg-4-2', conversationId: 'conv-4', senderId: 'client-4', senderName: 'Chloé Lefevre', senderRole: 'client', content: 'Super Thomas ! Je regarderai ça ce soir. Des changements importants ?', createdAt: '2026-05-17T12:00:00Z', readBy: ['coach-2', 'client-4'] },
+  { id: 'msg-4-3', conversationId: 'conv-4', senderId: 'coach-2', senderName: 'Thomas Martin', senderRole: 'coach', content: 'J\'ai augmenté les glucides complexes sur les 3 derniers jours avant la course. Riz, pâtes, patate douce.', createdAt: '2026-05-17T12:15:00Z', readBy: ['coach-2', 'client-4'] },
+  { id: 'msg-4-4', conversationId: 'conv-4', senderId: 'client-4', senderName: 'Chloé Lefevre', senderRole: 'client', content: 'Parfait je note ! Et pour l\'hydratation le jour J ?', createdAt: '2026-05-18T07:50:00Z', readBy: ['coach-2', 'client-4'] },
+  { id: 'msg-4-5', conversationId: 'conv-4', senderId: 'coach-2', senderName: 'Thomas Martin', senderRole: 'coach', content: 'Rappelle-toi d\'augmenter les glucides la veille de ta sortie longue.', createdAt: '2026-05-18T08:10:00Z', readBy: ['coach-2', 'client-4'] },
+
+  // conv-6 : Sophie ↔ Hugo
+  { id: 'msg-6-1', conversationId: 'conv-6', senderId: 'coach-3', senderName: 'Sophie Bernard', senderRole: 'coach', content: 'Bonjour Hugo, as-tu pu pratiquer les exercices de respiration cette semaine ?', createdAt: '2026-05-16T07:00:00Z', readBy: ['coach-3', 'client-7'] },
+  { id: 'msg-6-2', conversationId: 'conv-6', senderId: 'client-7', senderName: 'Hugo Garnier', senderRole: 'client', content: 'Oui ! 10 minutes chaque matin. Je me sens vraiment plus calme au travail.', createdAt: '2026-05-16T07:45:00Z', readBy: ['coach-3', 'client-7'] },
+  { id: 'msg-6-3', conversationId: 'conv-6', senderId: 'coach-3', senderName: 'Sophie Bernard', senderRole: 'coach', content: 'Excellent ! C\'est exactement ce qu\'on cherche. Continue sur cette lancée 🌿', createdAt: '2026-05-16T08:00:00Z', readBy: ['coach-3', 'client-7'] },
+  { id: 'msg-6-4', conversationId: 'conv-6', senderId: 'coach-3', senderName: 'Sophie Bernard', senderRole: 'coach', content: 'N\'oublie pas la méditation du matin, 10 min suffisent 🧘', createdAt: '2026-05-18T07:00:00Z', readBy: ['coach-3'] },
 ];
 
 // ─── Boutique ────────────────────────────────────────────────────────────────
