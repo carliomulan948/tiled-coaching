@@ -1,6 +1,6 @@
 'use client';
 
-import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState, CartItem, Order, Conversation, Message } from './types';
+import { User, Coach, Client, Session, Invoice, Payment, ProgressMeasurement, AuthState, CartItem, Order, Conversation, Message, WorkoutProgram } from './types';
 import { mockCoaches, mockClients, mockSessions, mockInvoices, mockPayments, mockProgressData, mockConversations, mockMessages } from './mockData';
 
 const STORAGE_KEYS = {
@@ -15,6 +15,7 @@ const STORAGE_KEYS = {
   ORDERS: 'coachpro_orders',
   CONVERSATIONS: 'coachpro_conversations',
   MESSAGES: 'coachpro_messages',
+  PROGRAMS: 'coachpro_programs',
 };
 
 function getItem<T>(key: string, defaultValue: T): T {
@@ -266,6 +267,25 @@ export function getUnreadCount(userId: string): number {
   return getMessages().filter(
     m => convIds.includes(m.conversationId) && m.senderId !== userId && !m.readBy.includes(userId)
   ).length;
+}
+
+// Programs
+export function getPrograms(): WorkoutProgram[] {
+  return getItem<WorkoutProgram[]>(STORAGE_KEYS.PROGRAMS, []);
+}
+
+export function saveProgram(program: WorkoutProgram): void {
+  const programs = getPrograms().filter(p => p.id !== program.id);
+  programs.unshift(program);
+  setItem(STORAGE_KEYS.PROGRAMS, programs);
+}
+
+export function deleteProgram(id: string): void {
+  setItem(STORAGE_KEYS.PROGRAMS, getPrograms().filter(p => p.id !== id));
+}
+
+export function getProgramsForCoach(coachId: string): WorkoutProgram[] {
+  return getPrograms().filter(p => p.coachId === coachId);
 }
 
 // Cart

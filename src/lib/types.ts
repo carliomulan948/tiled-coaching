@@ -179,6 +179,71 @@ export interface CartItem {
   imageColor: string;
 }
 
+// ─── Exercices & Programmes ──────────────────────────────────────────────────
+
+export type ExerciseCategory = 'musculation' | 'yoga' | 'cardio' | 'mobilite';
+
+export type Equipment =
+  | 'aucun'
+  | 'halteres'
+  | 'barre'
+  | 'machine'
+  | 'elastique'
+  | 'tapis'
+  | 'barre_traction'
+  | 'kettlebell'
+  | 'banc';
+
+export type MuscleGroup =
+  | 'pectoraux' | 'dos' | 'epaules' | 'biceps' | 'triceps'
+  | 'avant_bras' | 'abdominaux' | 'obliques' | 'quadriceps'
+  | 'ischio_jambiers' | 'fessiers' | 'mollets' | 'corps_entier' | 'gainage';
+
+export type Difficulty = 'debutant' | 'intermediaire' | 'avance';
+
+export interface Exercise {
+  id: string;
+  name: string;
+  category: ExerciseCategory;
+  equipment: Equipment[];
+  muscles: MuscleGroup[];
+  muscleSecondary?: MuscleGroup[];
+  difficulty: Difficulty;
+  description: string;
+  tips?: string;
+  defaultSets?: number;
+  defaultReps?: string;
+  defaultDuration?: string;
+  defaultRest?: number;
+}
+
+export interface ProgramExercise {
+  id: string;
+  exerciseId: string;
+  sets: number;
+  reps: string;
+  rest: number;
+  notes?: string;
+}
+
+export interface ProgramDay {
+  id: string;
+  name: string;
+  exercises: ProgramExercise[];
+}
+
+export interface WorkoutProgram {
+  id: string;
+  name: string;
+  coachId: string;
+  clientId?: string;
+  objective: string;
+  durationWeeks: number;
+  days: ProgramDay[];
+  notes?: string;
+  createdAt: string;
+}
+
 // ─── Messagerie ──────────────────────────────────────────────────────────────
 
 export interface Message {
