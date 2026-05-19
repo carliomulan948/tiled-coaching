@@ -188,11 +188,14 @@ export type Equipment =
   | 'halteres'
   | 'barre'
   | 'machine'
+  | 'poulie'
   | 'elastique'
   | 'tapis'
   | 'barre_traction'
   | 'kettlebell'
-  | 'banc';
+  | 'banc'
+  | 'anneaux'
+  | 'parallettes';
 
 export type MuscleGroup =
   | 'pectoraux' | 'dos' | 'epaules' | 'biceps' | 'triceps'
