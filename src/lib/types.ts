@@ -40,6 +40,9 @@ export interface Session {
   id: string;
   coachId: string;
   clientId: string;
+  participantIds?: string[];
+  maxParticipants?: number;
+  title?: string;
   date: string;
   startTime: string;
   endTime: string;
