@@ -271,3 +271,60 @@ body {
   border: 1px solid #2d3748 !important;
   border-radius: 8px !important;
 }
+
+/* Barre de navigation mobile (menu SQUATTY) */
+@media (max-width: 1023.98px) {
+  body.has-mobile-bar {
+    padding-top: 3.5rem;
+  }
+}
+
+/* Squatty Quest */
+.quest-gradient {
+  background: linear-gradient(135deg, #f97316, #ec4899 55%, #7c3aed);
+}
+
+.quest-gradient-text {
+  background: linear-gradient(135deg, #fb923c, #f472b6 55%, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes questPop {
+  0% { opacity: 0; transform: scale(0.85); }
+  60% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-quest-pop {
+  animation: questPop 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-quest-pop,
+  .animate-fade-in,
+  .animate-slide-in {
+    animation: none;
+  }
+}
+
+.btn-quest {
+  background: linear-gradient(135deg, #f97316, #ec4899 55%, #7c3aed);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-quest:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}

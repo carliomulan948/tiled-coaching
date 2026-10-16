@@ -7,6 +7,8 @@ import { getAuth, getClients, getSessions, getInvoices, getPayments } from '@/li
 import { Client, Session, Invoice } from '@/lib/types';
 import { Users, TrendingUp, Calendar, AlertCircle, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import QuestDashboardCard from '@/components/quest/QuestDashboardCard';
+import { BRAND } from '@/lib/brand';
 
 function StatCard({ title, value, subtitle, icon: Icon, color }: {
   title: string; value: string | number; subtitle?: string;
@@ -47,11 +49,13 @@ export default function DashboardPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [coachId, setCoachId] = useState<string | null>(null);
   const [role, setRole] = useState<string>('coach');
+  const [profile, setProfile] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
     if (!auth.isAuthenticated) { router.push('/'); return; }
     setRole(auth.role || 'coach');
+    if (auth.user) setProfile({ id: auth.user.id, name: auth.user.name });
 
     const allClients = getClients();
     const allSessions = getSessions();
@@ -86,8 +90,9 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen bg-[#080d1a]">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wider text-blue-300/70 mb-1">{BRAND.proSpace}</p>
           <h1 className="text-2xl font-bold text-white mb-1">Tableau de bord</h1>
           <p className="text-slate-400 text-sm">{new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
         </div>
@@ -99,6 +104,13 @@ export default function DashboardPage() {
           <StatCard title="Séances cette semaine" value={sessionsThisWeek.length} subtitle="À venir" icon={Calendar} color="bg-purple-500/20 text-purple-400" />
           <StatCard title="Factures en attente" value={pendingInvoices.length} subtitle={`${pendingInvoices.filter(i => i.status === 'overdue').length} en retard`} icon={AlertCircle} color="bg-orange-500/20 text-orange-400" />
         </div>
+
+        {/* Squatty Quest : séances du profil actif */}
+        {profile && (
+          <div className="mb-8">
+            <QuestDashboardCard profileId={profile.id} profileName={profile.name} />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Upcoming sessions */}

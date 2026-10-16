@@ -36,7 +36,7 @@ export default function AdminPage() {
       <main className="flex-1 p-8 overflow-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-1">Administration</h1>
-          <p className="text-slate-400 text-sm">Vue d&apos;ensemble de la plateforme CoachPro</p>
+          <p className="text-slate-400 text-sm">Vue d&apos;ensemble de la plateforme SQUATTY</p>
         </div>
 
         {/* Global stats */}

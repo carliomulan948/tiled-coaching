@@ -1,9 +1,15 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'CoachPro - Gestion de coaching',
-  description: 'Application de gestion pour coachs professionnels',
+  title: 'SQUATTY — Ta séance. Ton aventure.',
+  description: 'Squatty Pro pour gérer le coaching, Squatty Quest pour vivre ses séances comme une aventure.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#080d1a',
 };
 
 export default function RootLayout({

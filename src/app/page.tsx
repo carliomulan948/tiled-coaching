@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Dumbbell, User, Shield, ChevronRight, Star, Users, TrendingUp } from 'lucide-react';
+import { Dumbbell, User, Shield, ChevronRight, Star, Users, Compass } from 'lucide-react';
 import { setAuth, initializeStorage, getAuth } from '@/lib/storage';
 import { UserRole } from '@/lib/types';
 import { mockCoaches, mockClients } from '@/lib/mockData';
+import SquattyLogo from '@/components/SquattyLogo';
+import { BRAND } from '@/lib/brand';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -59,25 +61,22 @@ export default function LoginPage() {
         </div>
 
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Dumbbell className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-white">CoachPro</span>
+          <div className="mb-16">
+            <SquattyLogo size={44} />
           </div>
 
           <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-            La plateforme de gestion pour coachs professionnels
+            {BRAND.tagline}
           </h1>
           <p className="text-slate-400 text-lg mb-12">
-            Gérez vos clients, suivez leurs progrès, créez vos factures et optimisez votre activité depuis une seule interface.
+            Un espace professionnel pour accompagner tous les niveaux, et un espace sportif pour transformer chaque séance en étape d’aventure.
           </p>
 
           <div className="space-y-6">
             {[
-              { icon: Users, label: 'Gestion complète des clients', desc: 'Profils, suivi, historique' },
-              { icon: TrendingUp, label: 'Suivi des progrès', desc: 'Mesures, graphiques, évolution' },
-              { icon: Star, label: 'Facturation électronique', desc: 'Devis, factures, paiements' },
+              { icon: Users, label: BRAND.proSpace, desc: 'Clients, programmes, planning et suivi' },
+              { icon: Compass, label: BRAND.questSpace, desc: 'Parcours guidés, carnet, missions et écussons' },
+              { icon: Star, label: 'Facturation', desc: 'Devis, factures, paiements' },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
@@ -113,11 +112,8 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
-          <div className="flex items-center gap-3 mb-10 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Dumbbell className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-white">CoachPro</span>
+          <div className="mb-10 lg:hidden">
+            <SquattyLogo size={40} subtitle={BRAND.tagline} />
           </div>
 
           <div className="mb-10">
@@ -195,7 +191,7 @@ export default function LoginPage() {
 
           <div className="mt-8 p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
             <p className="text-slate-500 text-xs text-center">
-              Mode démonstration — Toutes les données sont stockées localement dans votre navigateur
+              Mode démonstration — connexion simulée sans mot de passe. Toutes les données sont stockées localement dans votre navigateur.
             </p>
           </div>
         </div>

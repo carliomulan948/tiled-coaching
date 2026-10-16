@@ -6,6 +6,7 @@ import { Search, Filter, Dumbbell, ChevronDown, ChevronUp, BookOpen, Zap, Leaf, 
 import { getAuth } from '@/lib/storage';
 import { exercisesDatabase, MUSCLE_LABELS, EQUIPMENT_LABELS, EQUIPMENT_COLORS, CATEGORY_COLORS, DIFFICULTY_COLORS } from '@/lib/exercisesData';
 import { Exercise, ExerciseCategory, Equipment, MuscleGroup, Difficulty } from '@/lib/types';
+import AppShell from '@/components/AppShell';
 
 const CATEGORIES: { key: ExerciseCategory | 'all'; label: string; icon: any; color: string }[] = [
   { key: 'all', label: 'Tous', icon: BookOpen, color: 'text-slate-400' },
@@ -175,6 +176,7 @@ export default function ExercicesPage() {
   if (!mounted) return null;
 
   return (
+    <AppShell>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -313,5 +315,6 @@ export default function ExercicesPage() {
         )}
       </div>
     </div>
+    </AppShell>
   );
 }

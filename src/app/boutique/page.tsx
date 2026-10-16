@@ -11,6 +11,7 @@ import {
 import { getAuth, getCart, addToCart, removeFromCart, updateCartQuantity, clearCart, addOrder } from '@/lib/storage';
 import { mockShopProducts, mockCoachingPacks } from '@/lib/mockData';
 import { CartItem, Order, ProductSize, ShopProduct, CoachingPack } from '@/lib/types';
+import AppShell from '@/components/AppShell';
 
 type Tab = 'vetements' | 'packs' | 'seances';
 
@@ -651,6 +652,7 @@ export default function BoutiquePage() {
   if (!mounted) return null;
 
   return (
+    <AppShell>
     <div className="min-h-full">
       {/* Hero banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-purple-950 px-6 py-10 mb-8 rounded-2xl mx-1">
@@ -804,5 +806,6 @@ export default function BoutiquePage() {
         </button>
       )}
     </div>
+    </AppShell>
   );
 }

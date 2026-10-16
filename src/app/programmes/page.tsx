@@ -13,6 +13,7 @@ import { getClients } from '@/lib/storage';
 import { exercisesDatabase as exercises } from '@/lib/exercisesData';
 import { WorkoutProgram, ProgramDay, ProgramExercise, Client, Exercise } from '@/lib/types';
 import { DIFFICULTY_COLORS, CATEGORY_COLORS, MUSCLE_LABELS, EQUIPMENT_LABELS } from '@/lib/exercisesData';
+import AppShell from '@/components/AppShell';
 
 function genId() {
   return `id-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -493,6 +494,7 @@ export default function ProgrammesPage() {
 
   if (view === 'create' || view === 'edit') {
     return (
+      <AppShell mainClassName="">
       <div className="min-h-screen bg-slate-950 p-4 md:p-6 lg:p-8">
         <div className="max-w-3xl mx-auto">
           <ProgramForm
@@ -504,10 +506,12 @@ export default function ProgrammesPage() {
           />
         </div>
       </div>
+      </AppShell>
     );
   }
 
   return (
+    <AppShell mainClassName="">
     <div className="min-h-screen bg-slate-950 p-4 md:p-6 lg:p-8">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
@@ -656,5 +660,6 @@ export default function ProgrammesPage() {
         </div>
       </div>
     </div>
+    </AppShell>
   );
 }

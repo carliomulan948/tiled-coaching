@@ -11,6 +11,7 @@ import {
   sendMessage, markMessagesRead, getConversations,
 } from '@/lib/storage';
 import { Conversation, Message, AuthState } from '@/lib/types';
+import AppShell from '@/components/AppShell';
 
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -381,6 +382,7 @@ export default function MessagesPage() {
   if (!mounted || !auth.user) return null;
 
   return (
+    <AppShell mainClassName="px-6 pt-6">
     <div className="h-[calc(100vh-4rem)] -mt-6 -mx-6 flex overflow-hidden rounded-xl border border-slate-800">
       {/* Sidebar conversations */}
       <div className={`w-full lg:w-80 xl:w-96 flex-shrink-0 bg-slate-900 border-r border-slate-800
@@ -418,5 +420,6 @@ export default function MessagesPage() {
         )}
       </div>
     </div>
+    </AppShell>
   );
 }
