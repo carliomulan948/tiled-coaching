@@ -113,8 +113,14 @@ function CartPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
       {/* Backdrop */}
       {open && <div className="fixed inset-0 bg-black/60 z-50" onClick={onClose} />}
 
-      {/* Panel */}
-      <div className={`fixed right-0 top-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Panel : masqué (invisible) une fois fermé pour sortir du focus clavier et des lecteurs d'écran */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Panier"
+        aria-hidden={!open}
+        className={`fixed right-0 top-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 flex flex-col transition-[transform,visibility] duration-300 ${open ? 'translate-x-0 visible' : 'translate-x-full invisible'}`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
           <div className="flex items-center gap-2">

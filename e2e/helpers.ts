@@ -59,6 +59,7 @@ export async function horizontalOverflow(page: Page): Promise<string[]> {
     document.querySelectorAll('body *').forEach(el => {
       if (el.closest('aside')) return;
       const style = getComputedStyle(el);
+      if (style.visibility === 'hidden') return;
       if (style.position === 'absolute' || style.position === 'fixed') return;
       const r = el.getBoundingClientRect();
       if (r.width === 0 || r.height === 0 || insideScroller(el)) return;
